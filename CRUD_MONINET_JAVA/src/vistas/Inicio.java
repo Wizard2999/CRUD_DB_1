@@ -758,8 +758,7 @@ public class Inicio extends javax.swing.JFrame {
         contratos.setFecha_finalizacion(txtFechaFin.getText());
         contratos.setEstado(txtEstado.getText());
         contratos.setIdCliete(txtIdClienteContratos.getText());
-
-        consultas.actualizarCliente(tbClientes, cliente, listaClientes.getListaClientes());
+        consultas.actualizarcontrato(tbContratos, contratos, listaContratos.getListaContratos());
         txtIdContrato.setText("");
         txtPaquete.setText("");
         txtFechaInicio.setText("");
@@ -826,7 +825,6 @@ public class Inicio extends javax.swing.JFrame {
     private void btnEliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarClienteActionPerformed
         // TODO add your handling code here:
         int row = tbClientes.getSelectedRow();
-        System.out.println("" + row);
         cliente.setIdCliente(tbClientes.getValueAt(row, 0).toString());
         consultas.eliminarCliente(cliente);
         consultas.CargarClientes(tbClientes, cliente, listaClientes.getListaClientes());

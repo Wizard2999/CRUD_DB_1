@@ -16,17 +16,18 @@ import javax.swing.JOptionPane;
  * @author usuario
  */
 public class ConexionDB {
-     private String base = "moninet";
+
+    private String base = "moninet";
     private String user = "root";
     private String password = "";
-    private String url = "jdbc:mysql://localhost:3306/"+base;
+    private String url = "jdbc:mysql://localhost:3306/" + base;
     private Connection con = null;
-    
-       public Connection getConexion() {
+
+    public Connection getConexion() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = (Connection) DriverManager.getConnection(this.url, this.user, this.password);
-           // JOptionPane.showMessageDialog(null, "Conectado a la base de datos");
+            // JOptionPane.showMessageDialog(null, "Conectado a la base de datos");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al conectarse a la base de datos.", "Error",
                     JOptionPane.ERROR_MESSAGE);
@@ -39,5 +40,5 @@ public class ConexionDB {
         }
         return con;
     }
-    
+
 }

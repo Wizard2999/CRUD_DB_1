@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-07-2023 a las 19:07:57
+-- Tiempo de generación: 06-07-2023 a las 02:59:25
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -33,20 +33,21 @@ CREATE TABLE `cliente` (
   `Cedula` varchar(10) NOT NULL,
   `Direccion` varchar(40) DEFAULT NULL,
   `Telefono` varchar(12) DEFAULT NULL,
-  `Correo` varchar(50) DEFAULT NULL,
-  `contrato` varchar(12) NOT NULL
+  `Correo` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `cliente`
 --
 
-INSERT INTO `cliente` (`IdCliete`, `Nombre`, `Cedula`, `Direccion`, `Telefono`, `Correo`, `contrato`) VALUES
-('001', 'Fernando', '9584361', 'Lorica', '3244567890', 'ExampleF@gmail.com', ''),
-('002', 'Juan', '8964273', 'Moñitos', '3215678909', 'Example2@hotmail.com', ''),
-('003', 'Enrique', '3657912', 'Broqueles', '3224576080', 'Lenrique22@gmail.com', ''),
-('004', 'Albertoo', ' 5281349', 'San Bernardo', ' 3498764523', ' Malbert@yahoo.com', ''),
-('005', 'Manuel', '6928175', 'El Ley', '3456789012', 'Tgirnael32@gmail.com', '');
+INSERT INTO `cliente` (`IdCliete`, `Nombre`, `Cedula`, `Direccion`, `Telefono`, `Correo`) VALUES
+('001', 'Fernando', '9584361', 'Lorica', '3244567890', 'ExampleF@gmail.com'),
+('002', 'Juan', '8964273', 'Moñitos', '3215678909', 'Example2@hotmail.com'),
+('003', 'Enrique', '3657912', 'Broqueles', '3224576080', 'Lenrique22@gmail.com'),
+('004', 'Albertoo', ' 5281349', 'San Bernardo', ' 3498764523', ' Malbert@yahoo.com'),
+('005', 'Manuel', '6928175', 'El Ley', '3456789012', 'Tgirnael32@gmail.com'),
+('006', 'Juan', '1063182524', 'Las Flores', '3225105139', 'juan@correo.com'),
+('007', 'raul', '3231', 'rio ciego # 2', '3432', 'raul@correo.com');
 
 -- --------------------------------------------------------
 
@@ -68,11 +69,11 @@ CREATE TABLE `contrato` (
 --
 
 INSERT INTO `contrato` (`IdContrato`, `IdPaquete`, `Fecha_inicio`, `Fecha_finalizacion`, `Estadoo`, `IdCliete`) VALUES
-('254629461', 'Plan alto', '22/11/2022', '', 'Activo', ''),
-('315132658', 'Plan alto', '19/12/2022', '8/03/2023', 'Inactivo', ''),
-('513949105', 'Plan Ultra', '06/03/2023', '01/06/2023', 'Inactivo', ''),
-('550698823', 'Plan basico', '13/12/2022', '', 'Activo', ''),
-('87075196', 'Plan basico', '01/01/2023', '', 'Activo', '');
+('254629461', 'Plan alto', '22/11/2022', '', 'Activo', '001'),
+('315132658', 'Plan alto', '19/12/2022', '8/03/2023', 'Inactivo', '002'),
+('513949105', 'Plan Ultra', '06/03/2023', '01/06/2023', 'Inactivo', '003'),
+('550698823', 'Plan basico', '13/12/2022', '', 'Activo', '004'),
+('87075196', 'Plan basico', '01/01/2023', '', 'Activo', '005');
 
 -- --------------------------------------------------------
 
@@ -134,8 +135,8 @@ CREATE TABLE `soporte_tecnico` (
 --
 
 INSERT INTO `soporte_tecnico` (`IdTicket`, `IdContrato`) VALUES
-('1574720511', '87075196'),
-('505858082', '550698823');
+('505858082', '550698823'),
+('1574720511', '87075196');
 
 --
 -- Índices para tablas volcadas
@@ -151,13 +152,16 @@ ALTER TABLE `cliente`
 -- Indices de la tabla `contrato`
 --
 ALTER TABLE `contrato`
-  ADD PRIMARY KEY (`IdContrato`);
+  ADD PRIMARY KEY (`IdContrato`),
+  ADD KEY `IdCliete` (`IdCliete`),
+  ADD KEY `IdPaquete` (`IdPaquete`);
 
 --
 -- Indices de la tabla `pagos`
 --
 ALTER TABLE `pagos`
-  ADD PRIMARY KEY (`IdPagos`);
+  ADD PRIMARY KEY (`IdPagos`),
+  ADD KEY `IdContrato` (`IdContrato`);
 
 --
 -- Indices de la tabla `paquetes_internet`
@@ -169,7 +173,30 @@ ALTER TABLE `paquetes_internet`
 -- Indices de la tabla `soporte_tecnico`
 --
 ALTER TABLE `soporte_tecnico`
-  ADD PRIMARY KEY (`IdTicket`);
+  ADD PRIMARY KEY (`IdTicket`),
+  ADD KEY `IdContrato` (`IdContrato`);
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `contrato`
+--
+ALTER TABLE `contrato`
+  ADD CONSTRAINT `contrato_ibfk_1` FOREIGN KEY (`IdCliete`) REFERENCES `cliente` (`IdCliete`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `pagos`
+--
+ALTER TABLE `pagos`
+  ADD CONSTRAINT `pagos_ibfk_1` FOREIGN KEY (`IdContrato`) REFERENCES `contrato` (`IdContrato`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `soporte_tecnico`
+--
+ALTER TABLE `soporte_tecnico`
+  ADD CONSTRAINT `soporte_tecnico_ibfk_1` FOREIGN KEY (`IdContrato`) REFERENCES `contrato` (`IdContrato`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

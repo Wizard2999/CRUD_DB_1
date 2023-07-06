@@ -38,7 +38,6 @@ public class Consultas extends ConexionDB {
             Connection connection = getConexion();
             Statement stmt = connection.createStatement();
             ResultSet resultado = stmt.executeQuery("SELECT * FROM `cliente`");
-
             listaClientes.clear();
             Object[] row = new Object[6];
             while (resultado.next()) {
